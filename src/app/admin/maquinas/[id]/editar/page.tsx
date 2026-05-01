@@ -1,0 +1,241 @@
+'use client';
+
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import Link from 'next/link';
+import { getMachine, updateMachine, uploadImages } from '@/lib/api';
+import type { MachineStatus } from '@/types/machine';
+
+function getToken(): string {
+  const match = document.cookie.match(/(?:^|;\s*)admin_token=([^;]+)/);
+  return match ? match[1] : '';
+}
+
+export default function EditarMaquinaPage() {
+  const router = useRouter();
+  const { id } = useParams<{ id: string }>();
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [status, setStatus] = useState<MachineStatus>('Disponible');
+  const [category, setCategory] = useState('');
+  const [existingUrls, setExistingUrls] = useState<string[]>([]);
+  const [newFiles, setNewFiles] = useState<File[]>([]);
+  const [newPreviews, setNewPreviews] = useState<string[]>([]);
+  const [fetching, setFetching] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    getMachine(id)
+      .then((m) => {
+        setName(m.name);
+        setDescription(m.technicalDescription);
+        setStatus(m.status);
+        setCategory(m.category ?? '');
+        setExistingUrls(m.imageUrls ?? []);
+      })
+      .catch(() => setError('No se pudo cargar el equipo'))
+      .finally(() => setFetching(false));
+  }, [id]);
+
+  function handleFiles(e: ChangeEvent<HTMLInputElement>) {
+    const selected = Array.from(e.target.files ?? []);
+    setNewFiles(selected);
+    setNewPreviews(selected.map((f) => URL.createObjectURL(f)));
+  }
+
+  function removeExisting(index: number) {
+    setExistingUrls((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function removeNew(index: number) {
+    setNewFiles((prev) => prev.filter((_, i) => i !== index));
+    setNewPreviews((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const token = getToken();
+      let imageUrls = [...existingUrls];
+      if (newFiles.length > 0) {
+        const uploaded = await uploadImages(newFiles, token);
+        imageUrls = [...imageUrls, ...uploaded.urls];
+      }
+      await updateMachine(id, { name, technicalDescription: description, status, category: category || undefined, imageUrls }, token);
+      router.push('/admin/dashboard');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al guardar');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (fetching) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-slate-500">
+        Cargando...
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen">
+      <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Link href="/admin/dashboard" className="text-slate-500 hover:text-amber-400 text-sm transition-colors">
+            ← Volver
+          </Link>
+          <span className="text-lg font-black text-amber-500">F&D Admin</span>
+        </div>
+      </header>
+
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+        <h1 className="text-2xl font-black text-slate-100 mb-8">Editar Equipo</h1>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+                Nombre del equipo *
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+                Descripción técnica *
+              </label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                rows={5}
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm resize-none"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+                  Estado *
+                </label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value as MachineStatus)}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 focus:outline-none focus:border-amber-500 transition-colors text-sm"
+                >
+                  <option value="Disponible">Disponible</option>
+                  <option value="Arrendada">Arrendada</option>
+                  <option value="Mantención">Mantención</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+                  Categoría
+                </label>
+                <input
+                  type="text"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Images */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">
+              Imágenes actuales
+            </label>
+
+            {existingUrls.length > 0 ? (
+              <div className="grid grid-cols-3 gap-3 mb-4">
+                {existingUrls.map((url, i) => (
+                  <div key={i} className="relative group">
+                    <img src={url} alt="" className="h-24 w-full object-cover rounded-lg" />
+                    <button
+                      type="button"
+                      onClick={() => removeExisting(i)}
+                      className="absolute top-1 right-1 bg-red-500 hover:bg-red-400 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-slate-600 text-sm mb-4">Sin imágenes</p>
+            )}
+
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+              Agregar nuevas imágenes
+            </label>
+            <label className="flex flex-col items-center justify-center border-2 border-dashed border-slate-700 hover:border-amber-500/50 rounded-xl p-6 cursor-pointer transition-colors group">
+              <span className="text-slate-500 text-sm group-hover:text-slate-400 transition-colors">
+                Seleccionar imágenes (JPG, PNG, WebP · máx. 10MB c/u)
+              </span>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                onChange={handleFiles}
+                className="hidden"
+              />
+            </label>
+
+            {newPreviews.length > 0 && (
+              <div className="grid grid-cols-3 gap-3 mt-4">
+                {newPreviews.map((src, i) => (
+                  <div key={i} className="relative group">
+                    <img src={src} alt="" className="h-24 w-full object-cover rounded-lg" />
+                    <button
+                      type="button"
+                      onClick={() => removeNew(i)}
+                      className="absolute top-1 right-1 bg-red-500 hover:bg-red-400 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {error && (
+            <p className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">
+              {error}
+            </p>
+          )}
+
+          <div className="flex gap-3">
+            <Link
+              href="/admin/dashboard"
+              className="flex-1 text-center border border-slate-700 hover:border-slate-600 text-slate-400 py-3 rounded-lg font-semibold text-sm transition-colors"
+            >
+              Cancelar
+            </Link>
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex-1 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 py-3 rounded-lg font-bold text-sm transition-colors"
+            >
+              {loading ? 'Guardando...' : 'Guardar cambios'}
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+  );
+}
