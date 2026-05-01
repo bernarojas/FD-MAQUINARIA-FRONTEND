@@ -21,7 +21,7 @@ export default function HeroSection() {
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950 to-transparent" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 pb-24 sm:pb-10">
         {/* Location badge */}
         <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/25 rounded-full px-5 py-2 mb-10">
           <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
@@ -89,7 +89,7 @@ export default function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden sm:block">
         <div className="w-6 h-10 border-2 border-slate-700 rounded-full flex justify-center pt-2.5">
           <div className="w-1 h-2.5 bg-amber-500 rounded-full" />
         </div>
