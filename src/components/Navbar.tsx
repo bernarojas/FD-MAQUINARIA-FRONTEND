@@ -19,9 +19,10 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center gap-8">
             {[
-              { href: '#equipos', label: 'Equipos' },
-              { href: '#nosotros', label: 'Nosotros' },
-              { href: '#contacto', label: 'Contacto' },
+              { href: '/', label: 'Inicio' },
+              { href: '/equipos', label: 'Equipos' },
+              { href: '/nosotros', label: 'Nosotros' },
+              { href: '/contacto', label: 'Contacto' },
             ].map((link) => (
               <Link
                 key={link.href}
@@ -31,12 +32,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="#contacto"
-              className="bg-amber-500 hover:bg-amber-400 text-slate-950 px-5 py-2.5 rounded text-sm font-bold transition-all hover:shadow-lg hover:shadow-amber-500/20"
-            >
-              Cotizar Arriendo
-            </Link>
           </div>
 
           <button
@@ -58,9 +53,10 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-slate-900 border-t border-slate-800 px-4 py-4 space-y-2">
           {[
-            { href: '#equipos', label: 'Equipos' },
-            { href: '#nosotros', label: 'Nosotros' },
-            { href: '#contacto', label: 'Contacto' },
+            { href: '/', label: 'Inicio' },
+            { href: '/equipos', label: 'Equipos' },
+            { href: '/nosotros', label: 'Nosotros' },
+            { href: '/contacto', label: 'Contacto' },
           ].map((link) => (
             <Link
               key={link.href}
@@ -71,13 +67,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="#contacto"
-            className="block bg-amber-500 text-slate-950 px-4 py-3 rounded font-bold text-center text-sm mt-2"
-            onClick={() => setIsOpen(false)}
-          >
-            Cotizar Arriendo
-          </Link>
         </div>
       )}
     </nav>

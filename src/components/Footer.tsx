@@ -23,9 +23,9 @@ export default function Footer() {
 
           <nav className="flex flex-wrap gap-6 text-sm">
             {[
-              { href: '#equipos', label: 'Equipos' },
-              { href: '#nosotros', label: 'Nosotros' },
-              { href: '#contacto', label: 'Contacto' },
+              { href: '/equipos', label: 'Equipos' },
+              { href: '/nosotros', label: 'Nosotros' },
+              { href: '/contacto', label: 'Contacto' },
             ].map((link) => (
               <Link
                 key={link.href}

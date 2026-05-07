@@ -5,6 +5,9 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getMachine, updateMachine, uploadImages } from '@/lib/api';
 import type { MachineStatus } from '@/types/machine';
+import DocumentsManager, { type DocEntry } from '@/components/admin/DocumentsManager';
+import BulletTextarea from '@/components/admin/BulletTextarea';
+import SpecsManager, { type SpecEntry } from '@/components/admin/SpecsManager';
 
 function getToken(): string {
   const match = document.cookie.match(/(?:^|;\s*)admin_token=([^;]+)/);
@@ -16,12 +19,15 @@ export default function EditarMaquinaPage() {
   const { id } = useParams<{ id: string }>();
 
   const [name, setName] = useState('');
+  const [shortDescription, setShortDescription] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<MachineStatus>('Disponible');
   const [category, setCategory] = useState('');
   const [existingUrls, setExistingUrls] = useState<string[]>([]);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [newPreviews, setNewPreviews] = useState<string[]>([]);
+  const [docs, setDocs] = useState<DocEntry[]>([]);
+  const [specs, setSpecs] = useState<SpecEntry[]>([]);
   const [fetching, setFetching] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -30,10 +36,13 @@ export default function EditarMaquinaPage() {
     getMachine(id)
       .then((m) => {
         setName(m.name);
+        setShortDescription(m.shortDescription ?? '');
         setDescription(m.technicalDescription);
         setStatus(m.status);
         setCategory(m.category ?? '');
         setExistingUrls(m.imageUrls ?? []);
+        setDocs(m.documents ?? []);
+        setSpecs(m.specs ?? []);
       })
       .catch(() => setError('No se pudo cargar el equipo'))
       .finally(() => setFetching(false));
@@ -41,8 +50,9 @@ export default function EditarMaquinaPage() {
 
   function handleFiles(e: ChangeEvent<HTMLInputElement>) {
     const selected = Array.from(e.target.files ?? []);
-    setNewFiles(selected);
-    setNewPreviews(selected.map((f) => URL.createObjectURL(f)));
+    setNewFiles((prev) => [...prev, ...selected]);
+    setNewPreviews((prev) => [...prev, ...selected.map((f) => URL.createObjectURL(f))]);
+    e.target.value = '';
   }
 
   function removeExisting(index: number) {
@@ -65,7 +75,9 @@ export default function EditarMaquinaPage() {
         const uploaded = await uploadImages(newFiles, token);
         imageUrls = [...imageUrls, ...uploaded.urls];
       }
-      await updateMachine(id, { name, technicalDescription: description, status, category: category || undefined, imageUrls }, token);
+      const documents = docs.filter((d) => d.title && d.url).map(({ title, url }) => ({ title, url }));
+      const filteredSpecs = specs.filter((s) => s.label && s.value);
+      await updateMachine(id, { name, shortDescription: shortDescription || undefined, technicalDescription: description, status, category: category || undefined, imageUrls, documents, specs: filteredSpecs }, token);
       router.push('/admin/dashboard');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error al guardar');
@@ -113,14 +125,26 @@ export default function EditarMaquinaPage() {
 
             <div>
               <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
+                Descripción corta
+              </label>
+              <input
+                type="text"
+                value={shortDescription}
+                onChange={(e) => setShortDescription(e.target.value)}
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm"
+                placeholder="Ej: Equipo de termofusión a tope para cañerías HDPE de 63 a 315 mm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
                 Descripción técnica *
               </label>
-              <textarea
+              <BulletTextarea
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={setDescription}
                 required
-                rows={5}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm resize-none"
+                rows={7}
               />
             </div>
 
@@ -213,11 +237,28 @@ export default function EditarMaquinaPage() {
             )}
           </div>
 
+          {/* Specs */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">
+              Especificaciones técnicas
+            </label>
+            <p className="text-slate-600 text-xs mb-4">Datos clave que se muestran en la ficha del equipo (Peso, Potencia, Diámetro máximo…)</p>
+            <SpecsManager specs={specs} onChange={setSpecs} />
+          </div>
+
           {error && (
             <p className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">
               {error}
             </p>
           )}
+
+          {/* Documents */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">
+              Documentos (PDF)
+            </label>
+            <DocumentsManager docs={docs} onChange={setDocs} token={getToken()} />
+          </div>
 
           <div className="flex gap-3">
             <Link

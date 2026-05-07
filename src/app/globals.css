@@ -1,10 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'react-day-picker/style.css';
 
 @layer base {
   ::selection {
     background-color: rgba(245, 158, 11, 0.25);
     color: #fff;
   }
+}
+
+/* react-day-picker dark theme */
+.rdp-dark {
+  --rdp-accent-color: #f59e0b;
+  --rdp-accent-background-color: rgba(245, 158, 11, 0.15);
+  --rdp-today-color: #f59e0b;
+  color: #cbd5e1;
+}
+.rdp-dark .rdp-day_button {
+  color: inherit;
+}
+.rdp-dark .rdp-outside {
+  color: #334155;
+}
+.rdp-dark .rdp-chevron {
+  fill: #64748b;
+}
+.rdp-dark button:hover:not([disabled]) .rdp-day_button,
+.rdp-dark .rdp-day_button:hover:not([disabled]) {
+  background-color: #1e293b;
+}
+.rdp-dark .rdp-range_middle .rdp-day_button {
+  color: #0f172a;
+}
+.rdp-dark .rdp-nav button:hover {
+  background-color: #1e293b;
+  border-radius: 0.5rem;
 }
