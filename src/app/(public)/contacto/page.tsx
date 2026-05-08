@@ -77,11 +77,11 @@ export default function ContactoPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-slate-400 font-semibold uppercase tracking-widest mb-0.5">{item.title}</p>
-                  <p className="text-slate-800 text-sm font-medium truncate">{item.value}</p>
+                  <p className="text-slate-800 text-sm font-medium break-words">{item.value}</p>
+                  <span className="text-blue-600 text-xs font-semibold group-hover:text-blue-700 transition-colors mt-0.5 block">
+                    {item.cta} →
+                  </span>
                 </div>
-                <span className="text-blue-600 text-sm font-semibold group-hover:text-blue-700 transition-colors shrink-0">
-                  {item.cta} →
-                </span>
               </a>
             ))}
           </div>
