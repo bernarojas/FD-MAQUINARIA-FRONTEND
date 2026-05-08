@@ -1,13 +1,15 @@
+export const dynamic = 'force-dynamic';
+
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import { notFound } from 'next/navigation';
 import { getMachine, getMachines, getRentalPeriods } from '@/lib/api';
 import type { MachineStatus } from '@/types/machine';
 import MachineGallery from '@/components/MachineGallery';
 import PageTracker from '@/components/PageTracker';
 
-const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCalendar'), { ssr: false });
+const AvailabilityCalendar = dynamicImport(() => import('@/components/AvailabilityCalendar'), { ssr: false });
 
 interface Props {
   params: { id: string };
