@@ -127,9 +127,9 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
         </select>
       </div>
 
-      <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* Calendar */}
-        <div className="rdp-light">
+        <div className="rdp-light order-2 lg:order-1">
           <DayPicker
             locale={es}
             mode="range"
@@ -160,7 +160,7 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
         </div>
 
         {/* Form + list */}
-        <div className="space-y-5">
+        <div className="space-y-5 order-1 lg:order-2">
           <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
               Bloquear período
