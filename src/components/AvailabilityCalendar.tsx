@@ -35,21 +35,23 @@ export default function AvailabilityCalendar({ periods }: { periods: RentalPerio
         Disponibilidad
       </h2>
 
-      <DayPicker
-        locale={es}
-        numberOfMonths={months}
-        pagedNavigation
-        showOutsideDays={false}
-        modifiers={{ booked: blocked }}
-        modifiersStyles={{
-          booked: {
-            color: '#ef4444',
-            backgroundColor: 'rgba(239,68,68,0.12)',
-            textDecoration: 'line-through',
-            borderRadius: '50%',
-          },
-        }}
-      />
+      <div className="flex justify-center md:block">
+        <DayPicker
+          locale={es}
+          numberOfMonths={months}
+          pagedNavigation
+          showOutsideDays={false}
+          modifiers={{ booked: blocked }}
+          modifiersStyles={{
+            booked: {
+              color: '#ef4444',
+              backgroundColor: 'rgba(239,68,68,0.12)',
+              textDecoration: 'line-through',
+              borderRadius: '50%',
+            },
+          }}
+        />
+      </div>
 
       <div className="mt-3 flex items-center gap-5 text-xs text-slate-500">
         <span className="flex items-center gap-1.5">
