@@ -1,11 +1,9 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
 import { login } from '@/lib/api';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,11 +16,10 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const { access_token } = await login(email, password);
-      document.cookie = `admin_token=${access_token}; path=/; max-age=${60 * 60 * 24 * 7}`;
-      router.push('/admin/dashboard');
+      document.cookie = `admin_token=${access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+      window.location.href = '/admin/dashboard';
     } catch {
       setError('Email o contraseña incorrectos');
-    } finally {
       setLoading(false);
     }
   }
