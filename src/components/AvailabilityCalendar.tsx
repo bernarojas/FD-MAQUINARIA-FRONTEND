@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { DayPicker } from 'react-day-picker';
 import { es } from 'react-day-picker/locale';
 import type { RentalPeriod } from '@/types/rental';
@@ -19,6 +20,14 @@ function buildBlockedDates(periods: RentalPeriod[]): Date[] {
 
 export default function AvailabilityCalendar({ periods }: { periods: RentalPeriod[] }) {
   const blocked = buildBlockedDates(periods);
+  const [months, setMonths] = useState(2);
+
+  useEffect(() => {
+    function update() { setMonths(window.innerWidth < 768 ? 1 : 2); }
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm rdp-light">
@@ -28,7 +37,7 @@ export default function AvailabilityCalendar({ periods }: { periods: RentalPerio
 
       <DayPicker
         locale={es}
-        numberOfMonths={2}
+        numberOfMonths={months}
         pagedNavigation
         showOutsideDays={false}
         modifiers={{ booked: blocked }}
