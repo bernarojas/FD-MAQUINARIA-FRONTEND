@@ -127,7 +127,7 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
         </select>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8 items-start">
+      <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-8 items-start">
         {/* Calendar */}
         <div className="rdp-light">
           <DayPicker
@@ -194,7 +194,7 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
                 {range.to && range.to !== range.from ? ` → ${fmtDate(toDateStr(range.to))}` : ' (selecciona fecha de término)'}
               </p>
             ) : (
-              <p className="text-xs text-slate-400">Selecciona el rango en el calendario →</p>
+              <p className="text-xs text-slate-400">Selecciona el rango de fechas en el calendario</p>
             )}
 
             {error && <p className="text-red-600 text-xs">{error}</p>}

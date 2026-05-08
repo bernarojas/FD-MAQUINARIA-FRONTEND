@@ -78,15 +78,15 @@ export default function MachineGallery({ images, name }: Props) {
           onClick={() => setLightbox(false)}
         >
           <button
-            className="absolute top-4 right-4 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors text-xl"
-            onClick={() => setLightbox(false)}
+            className="absolute top-4 right-4 z-10 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors text-xl"
+            onClick={(e) => { e.stopPropagation(); setLightbox(false); }}
           >
             ×
           </button>
 
           {images.length > 1 && (
             <button
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors"
               onClick={(e) => { e.stopPropagation(); setActive((p) => (p - 1 + images.length) % images.length); }}
             >
               ‹
@@ -102,7 +102,7 @@ export default function MachineGallery({ images, name }: Props) {
 
           {images.length > 1 && (
             <button
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors"
               onClick={(e) => { e.stopPropagation(); setActive((p) => (p + 1) % images.length); }}
             >
               ›

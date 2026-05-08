@@ -306,7 +306,7 @@ export default function DashboardPage() {
               <h2 className="text-xl font-black text-slate-900">Calendario de arriendos</h2>
               <p className="text-slate-500 text-sm mt-0.5">Marca los períodos en que cada equipo está arrendado</p>
             </div>
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm">
               <RentalCalendar machines={machines} />
             </div>
           </div>
