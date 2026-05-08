@@ -21,7 +21,7 @@ export default function AvailabilityCalendar({ periods }: { periods: RentalPerio
   const blocked = buildBlockedDates(periods);
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 rdp-dark">
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm rdp-light">
       <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">
         Disponibilidad
       </h2>
@@ -34,8 +34,8 @@ export default function AvailabilityCalendar({ periods }: { periods: RentalPerio
         modifiers={{ booked: blocked }}
         modifiersStyles={{
           booked: {
-            color: '#f87171',
-            backgroundColor: 'rgba(239,68,68,0.18)',
+            color: '#ef4444',
+            backgroundColor: 'rgba(239,68,68,0.12)',
             textDecoration: 'line-through',
             borderRadius: '50%',
           },
@@ -44,11 +44,11 @@ export default function AvailabilityCalendar({ periods }: { periods: RentalPerio
 
       <div className="mt-3 flex items-center gap-5 text-xs text-slate-500">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full" style={{ backgroundColor: 'rgba(239,68,68,0.4)' }} />
+          <span className="w-3 h-3 rounded-full bg-red-200" />
           Arrendado
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-slate-700" />
+          <span className="w-3 h-3 rounded-full bg-slate-200" />
           Disponible
         </span>
       </div>

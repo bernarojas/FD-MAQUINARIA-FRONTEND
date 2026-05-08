@@ -8,18 +8,18 @@ import type { Machine, MachineStatus } from '@/types/machine';
 const statusConfig: Record<MachineStatus, { label: string; classes: string; dot: string }> = {
   Disponible: {
     label: 'Disponible',
-    classes: 'text-emerald-400 bg-slate-950/80 border-emerald-500/50',
-    dot: 'bg-emerald-400',
+    classes: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+    dot: 'bg-emerald-500',
   },
   Arrendada: {
     label: 'Arrendada',
-    classes: 'text-red-400 bg-slate-950/80 border-red-500/50',
-    dot: 'bg-red-400',
+    classes: 'text-red-700 bg-red-50 border-red-200',
+    dot: 'bg-red-500',
   },
   'Mantención': {
     label: 'En Mantención',
-    classes: 'text-amber-400 bg-slate-950/80 border-amber-500/50',
-    dot: 'bg-amber-400',
+    classes: 'text-amber-700 bg-amber-50 border-amber-200',
+    dot: 'bg-amber-500',
   },
 };
 
@@ -32,10 +32,10 @@ export default function MachineCard({ machine }: { machine: Machine }) {
   return (
     <article
       onClick={() => router.push(`/equipos/${machine.id}`)}
-      className="group bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-500/40 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/10 flex flex-col cursor-pointer h-full"
+      className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10 flex flex-col cursor-pointer h-full"
     >
         {/* Image */}
-        <div className="relative h-80 overflow-hidden bg-slate-800 shrink-0">
+        <div className="relative h-80 overflow-hidden bg-slate-100 shrink-0">
           <Image
             src={imageUrl}
             alt={machine.name}
@@ -54,31 +54,31 @@ export default function MachineCard({ machine }: { machine: Machine }) {
         {/* Content */}
         <div className="p-5 flex flex-col flex-1">
           {machine.category && (
-            <span className="text-xs text-amber-500 font-semibold tracking-widest uppercase">
+            <span className="text-xs text-blue-600 font-semibold tracking-widest uppercase">
               {machine.category}
             </span>
           )}
-          <h3 className="mt-1 text-lg font-bold text-slate-100 group-hover:text-amber-400 transition-colors line-clamp-1">
+          <h3 className="mt-1 text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors line-clamp-1">
             {machine.name}
           </h3>
-          <p className="mt-2 text-sm text-slate-400 line-clamp-3 leading-relaxed flex-1">
+          <p className="mt-2 text-sm text-slate-500 line-clamp-3 leading-relaxed flex-1">
             {machine.shortDescription || machine.technicalDescription}
           </p>
 
-          <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
-            <span className="text-sm font-semibold text-amber-500 group-hover:text-amber-400 transition-colors shrink-0">
+          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+            <span className="text-sm font-semibold text-blue-600 group-hover:text-blue-700 transition-colors shrink-0">
               Ver ficha →
             </span>
             {isAvailable ? (
               <Link
                 href={`/contacto?equipo=${encodeURIComponent(machine.name)}`}
                 onClick={(e) => e.stopPropagation()}
-                className="text-sm px-4 py-2 rounded font-semibold shrink-0 bg-amber-500 hover:bg-amber-400 text-slate-950 transition-colors"
+                className="text-sm px-4 py-2 rounded-lg font-semibold shrink-0 bg-orange-500 hover:bg-orange-600 text-white transition-colors"
               >
                 Cotizar
               </Link>
             ) : (
-              <span className="text-sm px-4 py-2 rounded font-semibold shrink-0 bg-slate-800 text-slate-600">
+              <span className="text-sm px-4 py-2 rounded-lg font-semibold shrink-0 bg-slate-100 text-slate-400">
                 No disponible
               </span>
             )}

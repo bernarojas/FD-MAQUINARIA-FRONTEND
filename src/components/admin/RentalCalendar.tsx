@@ -34,6 +34,9 @@ function fmtDate(str: string): string {
   return `${d}/${m}/${y}`;
 }
 
+const inputCls = 'w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors text-sm';
+const labelCls = 'block text-xs font-semibold text-slate-600 uppercase tracking-widest mb-1.5';
+
 export default function RentalCalendar({ machines }: { machines: Machine[] }) {
   const [machineId, setMachineId]   = useState(machines[0]?.id ?? '');
   const [periods, setPeriods]       = useState<RentalPeriod[]>([]);
@@ -107,9 +110,6 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
     setRange(newRange);
   }
 
-  const inputCls = 'w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm';
-  const labelCls = 'block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1.5';
-
   return (
     <div>
       {/* Machine selector */}
@@ -128,7 +128,7 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
 
       <div className="grid lg:grid-cols-2 gap-8 items-start">
         {/* Calendar */}
-        <div className="rdp-dark">
+        <div className="rdp-light">
           <DayPicker
             locale={es}
             mode="range"
@@ -139,8 +139,8 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
             modifiers={{ booked: blockedDates }}
             modifiersStyles={{
               booked: {
-                color: '#f87171',
-                backgroundColor: 'rgba(239,68,68,0.18)',
+                color: '#ef4444',
+                backgroundColor: 'rgba(239,68,68,0.12)',
                 textDecoration: 'line-through',
                 borderRadius: '50%',
                 opacity: 1,
@@ -148,20 +148,20 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
             }}
           />
           {range?.from && (
-            <p className="text-xs text-slate-500 mt-2">
+            <p className="text-xs text-blue-600 font-medium mt-2">
               {fmtDate(toDateStr(range.from))}
               {range.to && range.to !== range.from ? ` → ${fmtDate(toDateStr(range.to))}` : ''}
             </p>
           )}
           {rangeError && (
-            <p className="text-red-400 text-xs mt-2">{rangeError}</p>
+            <p className="text-red-600 text-xs mt-2">{rangeError}</p>
           )}
         </div>
 
         {/* Form + list */}
         <div className="space-y-5">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
               Bloquear período
             </p>
 
@@ -188,20 +188,20 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
             </div>
 
             {range?.from ? (
-              <p className="text-xs text-amber-500">
+              <p className="text-xs text-blue-600 font-medium">
                 Fechas: {fmtDate(toDateStr(range.from))}
                 {range.to && range.to !== range.from ? ` → ${fmtDate(toDateStr(range.to))}` : ' (selecciona fecha de término)'}
               </p>
             ) : (
-              <p className="text-xs text-slate-600">Selecciona el rango en el calendario →</p>
+              <p className="text-xs text-slate-400">Selecciona el rango en el calendario →</p>
             )}
 
-            {error && <p className="text-red-400 text-xs">{error}</p>}
+            {error && <p className="text-red-600 text-xs">{error}</p>}
 
             <button
               onClick={handleSave}
               disabled={saving}
-              className="w-full bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 py-2.5 rounded-xl font-bold text-sm transition-colors"
+              className="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white py-2.5 rounded-xl font-bold text-sm transition-colors"
             >
               {saving ? 'Guardando...' : 'Bloquear fechas'}
             </button>
@@ -215,18 +215,18 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
               </p>
               <div className="space-y-2">
                 {periods.map((p) => (
-                  <div key={p.id} className="flex items-center justify-between bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 gap-4">
+                  <div key={p.id} className="flex items-center justify-between bg-white border border-slate-200 rounded-xl px-4 py-3 gap-4 shadow-sm">
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-slate-200 truncate">{p.companyName}</p>
+                      <p className="text-sm font-semibold text-slate-900 truncate">{p.companyName}</p>
                       <p className="text-xs text-slate-500 mt-0.5">
                         {fmtDate(p.startDate)} → {fmtDate(p.endDate)}
                       </p>
-                      {p.notes && <p className="text-xs text-slate-600 mt-0.5 truncate">{p.notes}</p>}
+                      {p.notes && <p className="text-xs text-slate-400 mt-0.5 truncate">{p.notes}</p>}
                     </div>
                     <button
                       onClick={() => handleDelete(p.id)}
                       disabled={deletingId === p.id}
-                      className="text-slate-600 hover:text-red-400 transition-colors text-xs shrink-0 disabled:opacity-40"
+                      className="text-slate-400 hover:text-red-600 transition-colors text-xs shrink-0 disabled:opacity-40"
                     >
                       {deletingId === p.id ? '...' : 'Eliminar'}
                     </button>
@@ -237,7 +237,7 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
           )}
 
           {periods.length === 0 && (
-            <p className="text-xs text-slate-600 text-center py-4">
+            <p className="text-xs text-slate-400 text-center py-4">
               No hay períodos registrados para este equipo.
             </p>
           )}

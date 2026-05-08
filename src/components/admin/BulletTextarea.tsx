@@ -22,7 +22,6 @@ export default function BulletTextarea({ value, onChange, required, rows = 5, pl
     const selected = value.slice(start, end);
 
     if (selected) {
-      // Add bullet to each selected line
       const bulleted = selected
         .split('\n')
         .map((line) => (line.startsWith('• ') ? line : `• ${line}`))
@@ -30,13 +29,11 @@ export default function BulletTextarea({ value, onChange, required, rows = 5, pl
       const next = value.slice(0, start) + bulleted + value.slice(end);
       onChange(next);
     } else {
-      // Insert bullet at cursor (start of current line)
       const lineStart = value.lastIndexOf('\n', start - 1) + 1;
       const line = value.slice(lineStart, start);
       if (line.startsWith('• ')) return;
       const next = value.slice(0, lineStart) + '• ' + value.slice(lineStart);
       onChange(next);
-      // Restore cursor after bullet
       requestAnimationFrame(() => {
         el.selectionStart = el.selectionEnd = start + 2;
         el.focus();
@@ -66,7 +63,7 @@ export default function BulletTextarea({ value, onChange, required, rows = 5, pl
         <button
           type="button"
           onClick={insertBullets}
-          className="text-xs text-slate-500 hover:text-amber-400 border border-slate-700 hover:border-amber-500/50 rounded px-2 py-1 transition-colors"
+          className="text-xs text-slate-500 hover:text-blue-600 border border-slate-300 hover:border-blue-400 rounded px-2 py-1 transition-colors bg-white"
           title="Agregar viñeta a la línea o selección"
         >
           • Viñeta
@@ -80,7 +77,7 @@ export default function BulletTextarea({ value, onChange, required, rows = 5, pl
         required={required}
         rows={rows}
         placeholder={placeholder}
-        className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm resize-none"
+        className="w-full bg-white border border-slate-300 rounded-lg px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors text-sm resize-none"
       />
     </div>
   );

@@ -23,6 +23,8 @@ export default function SpecsManager({ specs, onChange }: Props) {
     onChange(specs.filter((_, i) => i !== index));
   }
 
+  const inputCls = 'flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors text-sm';
+
   return (
     <div className="space-y-3">
       {specs.map((spec, i) => (
@@ -32,19 +34,19 @@ export default function SpecsManager({ specs, onChange }: Props) {
             value={spec.label}
             onChange={(e) => update(i, 'label', e.target.value)}
             placeholder="Ej: Peso"
-            className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm"
+            className={inputCls}
           />
           <input
             type="text"
             value={spec.value}
             onChange={(e) => update(i, 'value', e.target.value)}
             placeholder="Ej: 1.200 kg"
-            className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm"
+            className={inputCls}
           />
           <button
             type="button"
             onClick={() => remove(i)}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition-colors shrink-0"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors shrink-0"
           >
             ×
           </button>
@@ -54,9 +56,9 @@ export default function SpecsManager({ specs, onChange }: Props) {
       <button
         type="button"
         onClick={add}
-        className="flex items-center gap-2 text-sm text-slate-500 hover:text-amber-400 transition-colors"
+        className="flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 transition-colors"
       >
-        <span className="w-5 h-5 rounded-full border border-slate-700 hover:border-amber-500 flex items-center justify-center text-xs transition-colors">+</span>
+        <span className="w-5 h-5 rounded-full border border-slate-300 hover:border-blue-500 flex items-center justify-center text-xs transition-colors">+</span>
         Agregar especificación
       </button>
     </div>

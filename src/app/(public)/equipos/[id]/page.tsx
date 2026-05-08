@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
@@ -37,22 +37,22 @@ export async function generateStaticParams() {
 const statusConfig: Record<MachineStatus, { label: string; classes: string }> = {
   Disponible: {
     label: 'Disponible para Arriendo',
-    classes: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30',
+    classes: 'text-emerald-700 bg-emerald-50 border-emerald-200',
   },
   Arrendada: {
     label: 'Actualmente Arrendada',
-    classes: 'text-red-400 bg-red-400/10 border-red-400/30',
+    classes: 'text-red-700 bg-red-50 border-red-200',
   },
   'Mantención': {
     label: 'En Mantención',
-    classes: 'text-amber-400 bg-amber-400/10 border-amber-400/30',
+    classes: 'text-amber-700 bg-amber-50 border-amber-200',
   },
 };
 
 const cardStatusConfig: Record<MachineStatus, { label: string; classes: string; dot: string }> = {
-  Disponible: { label: 'Disponible', classes: 'text-emerald-400 bg-slate-950/80 border-emerald-500/50', dot: 'bg-emerald-400' },
-  Arrendada:  { label: 'Arrendada',  classes: 'text-red-400 bg-slate-950/80 border-red-500/50',     dot: 'bg-red-400' },
-  'Mantención': { label: 'En Mantención', classes: 'text-amber-400 bg-slate-950/80 border-amber-500/50', dot: 'bg-amber-400' },
+  Disponible: { label: 'Disponible', classes: 'text-emerald-700 bg-white/90 border-emerald-200', dot: 'bg-emerald-500' },
+  Arrendada:  { label: 'Arrendada',  classes: 'text-red-700 bg-white/90 border-red-200',        dot: 'bg-red-500' },
+  'Mantención': { label: 'En Mantención', classes: 'text-amber-700 bg-white/90 border-amber-200', dot: 'bg-amber-500' },
 };
 
 export default async function MachinePage({ params }: Props) {
@@ -75,12 +75,12 @@ export default async function MachinePage({ params }: Props) {
   const rentalPeriods = await getRentalPeriods(params.id).catch(() => []);
 
   return (
-    <div className="min-h-screen pt-24 pb-24">
+    <div className="min-h-screen pt-24 pb-24 bg-white">
       <PageTracker />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           href="/equipos"
-          className="inline-flex items-center gap-2 text-slate-500 hover:text-amber-400 transition-colors mb-10 text-sm font-medium"
+          className="inline-flex items-center gap-2 text-slate-500 hover:text-blue-600 transition-colors mb-10 text-sm font-medium"
         >
           ← Volver al catálogo
         </Link>
@@ -92,11 +92,11 @@ export default async function MachinePage({ params }: Props) {
           {/* Info */}
           <div>
             {machine.category && (
-              <span className="text-amber-500 text-xs font-semibold tracking-widest uppercase">
+              <span className="text-blue-600 text-xs font-semibold tracking-widest uppercase">
                 {machine.category}
               </span>
             )}
-            <h1 className="mt-2 text-3xl md:text-4xl font-black text-slate-100 leading-tight">
+            <h1 className="mt-2 text-3xl md:text-4xl font-black text-slate-900 leading-tight">
               {machine.name}
             </h1>
 
@@ -107,19 +107,19 @@ export default async function MachinePage({ params }: Props) {
             </div>
 
             {machine.shortDescription && (
-              <p className="mt-5 text-slate-300 leading-relaxed text-base">
+              <p className="mt-5 text-slate-600 leading-relaxed text-base">
                 {machine.shortDescription}
               </p>
             )}
 
             {machine.specs && machine.specs.length > 0 && (
-              <div className="mt-6 grid grid-cols-2 gap-px bg-slate-800 rounded-xl overflow-hidden border border-slate-800">
+              <div className="mt-6 grid grid-cols-2 gap-px bg-slate-200 rounded-xl overflow-hidden border border-slate-200">
                 {machine.specs.map((spec, i) => (
-                  <div key={i} className="bg-slate-900 px-4 py-4">
-                    <p className="text-amber-500 text-[10px] font-bold uppercase tracking-widest mb-1">
+                  <div key={i} className={`bg-white px-4 py-4 ${machine.specs.length % 2 !== 0 && i === machine.specs.length - 1 ? 'col-span-2' : ''}`}>
+                    <p className="text-blue-600 text-[10px] font-bold uppercase tracking-widest mb-1">
                       {spec.label}
                     </p>
-                    <p className="text-slate-100 font-black text-lg leading-none">
+                    <p className="text-slate-900 font-black text-lg leading-none">
                       {spec.value}
                     </p>
                   </div>
@@ -143,9 +143,8 @@ export default async function MachinePage({ params }: Props) {
               {isAvailable && (
                 <Link
                   href={`/contacto?equipo=${encodeURIComponent(machine.name)}`}
-                  className="flex items-center justify-center gap-3 w-full bg-amber-500 hover:bg-amber-400 text-slate-950 py-4 px-6 rounded-xl font-bold text-base transition-all hover:shadow-2xl hover:shadow-amber-500/20"
+                  className="flex items-center justify-center gap-3 w-full bg-orange-500 hover:bg-orange-600 text-white py-4 px-6 rounded-xl font-bold text-base transition-all hover:shadow-2xl hover:shadow-orange-500/20"
                 >
-                  <img src="/images/icono-ejecutivo.png" alt="" className="w-5 h-5 shrink-0" />
                   Cotizar Arriendo
                 </Link>
               )}
@@ -164,17 +163,17 @@ export default async function MachinePage({ params }: Props) {
                       href={doc.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 bg-slate-900 border border-slate-800 hover:border-amber-500/30 rounded-xl px-4 py-3 transition-all group"
+                      className="flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 rounded-xl px-4 py-3 transition-all group shadow-sm"
                     >
-                      <div className="w-8 h-8 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center justify-center shrink-0">
-                        <svg className="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                      <div className="w-8 h-8 bg-red-50 border border-red-100 rounded-lg flex items-center justify-center shrink-0">
+                        <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
                         </svg>
                       </div>
-                      <span className="text-slate-300 group-hover:text-amber-400 text-sm font-medium transition-colors flex-1">
+                      <span className="text-slate-700 group-hover:text-blue-600 text-sm font-medium transition-colors flex-1">
                         {doc.title}
                       </span>
-                      <svg className="w-4 h-4 text-slate-600 group-hover:text-amber-400 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                       </svg>
                     </a>
@@ -190,8 +189,8 @@ export default async function MachinePage({ params }: Props) {
           <AvailabilityCalendar periods={rentalPeriods} />
         </div>
 
-        {/* Technical description — full width below the grid */}
-        <div className="mt-14 bg-slate-900 border border-slate-800 rounded-2xl p-8">
+        {/* Technical description */}
+        <div className="mt-14 bg-slate-50 border border-slate-200 rounded-2xl p-8">
           <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">
             Descripción Técnica
           </h2>
@@ -200,13 +199,13 @@ export default async function MachinePage({ params }: Props) {
               const isBullet = line.startsWith('• ');
               return isBullet ? (
                 <div key={i} className="flex gap-2.5">
-                  <span className="text-amber-500 text-sm leading-relaxed shrink-0">•</span>
-                  <span className="text-slate-300 text-sm leading-relaxed">{line.slice(2)}</span>
+                  <span className="text-blue-600 text-sm leading-relaxed shrink-0">•</span>
+                  <span className="text-slate-600 text-sm leading-relaxed">{line.slice(2)}</span>
                 </div>
               ) : line.trim() === '' ? (
                 <div key={i} className="h-2" />
               ) : (
-                <p key={i} className="text-slate-300 text-sm leading-relaxed">{line}</p>
+                <p key={i} className="text-slate-600 text-sm leading-relaxed">{line}</p>
               );
             })}
           </div>
@@ -226,9 +225,9 @@ export default async function MachinePage({ params }: Props) {
                   <Link
                     key={m.id}
                     href={`/equipos/${m.id}`}
-                    className="group bg-slate-900 border border-slate-800 hover:border-amber-500/40 rounded-xl overflow-hidden flex flex-col transition-all hover:shadow-2xl hover:shadow-amber-500/10"
+                    className="group bg-white border border-slate-200 hover:border-blue-300 rounded-xl overflow-hidden flex flex-col transition-all hover:shadow-xl hover:shadow-blue-500/10"
                   >
-                    <div className="relative h-48 bg-slate-800 overflow-hidden">
+                    <div className="relative h-48 bg-slate-100 overflow-hidden">
                       {img ? (
                         <img
                           src={img}
@@ -236,7 +235,7 @@ export default async function MachinePage({ params }: Props) {
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-600 text-sm">Sin imagen</div>
+                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">Sin imagen</div>
                       )}
                       <div className="absolute top-3 right-3">
                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-sm ${s.classes}`}>
@@ -247,15 +246,15 @@ export default async function MachinePage({ params }: Props) {
                     </div>
                     <div className="p-4 flex flex-col flex-1">
                       {m.category && (
-                        <span className="text-[10px] text-amber-500 font-bold tracking-widest uppercase">{m.category}</span>
+                        <span className="text-[10px] text-blue-600 font-bold tracking-widest uppercase">{m.category}</span>
                       )}
-                      <h3 className="mt-1 text-sm font-bold text-slate-100 group-hover:text-amber-400 transition-colors line-clamp-1">
+                      <h3 className="mt-1 text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors line-clamp-1">
                         {m.name}
                       </h3>
-                      <p className="mt-1 text-xs text-slate-400 line-clamp-2 leading-relaxed flex-1">
+                      <p className="mt-1 text-xs text-slate-500 line-clamp-2 leading-relaxed flex-1">
                         {m.shortDescription || m.technicalDescription}
                       </p>
-                      <span className="mt-3 text-amber-500 text-xs font-semibold group-hover:text-amber-400 transition-colors">
+                      <span className="mt-3 text-blue-600 text-xs font-semibold group-hover:text-blue-700 transition-colors">
                         Ver ficha →
                       </span>
                     </div>

@@ -41,27 +41,27 @@ export default function ContactForm() {
 
   if (success) {
     return (
-      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-10 text-center">
-        <div className="w-14 h-14 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-10 text-center">
+        <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="text-xl font-black text-slate-100 mb-2">¡Solicitud enviada!</h3>
-        <p className="text-slate-400 text-sm max-w-sm mx-auto">
+        <h3 className="text-xl font-black text-slate-900 mb-2">¡Solicitud enviada!</h3>
+        <p className="text-slate-500 text-sm max-w-sm mx-auto">
           Hemos recibido su consulta. Nos pondremos en contacto con usted a la brevedad.
         </p>
       </div>
     );
   }
 
-  const inputClass = "w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-amber-500 transition-colors text-sm";
-  const labelClass = "block text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2";
+  const inputClass = "w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-colors text-sm";
+  const labelClass = "block text-xs font-semibold text-slate-700 uppercase tracking-widest mb-2";
 
   return (
-    <form onSubmit={handleSubmit} className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 space-y-5">
+    <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-2xl p-8 space-y-5 shadow-sm">
       <div>
-        <h3 className="text-xl font-black text-slate-100 mb-1">Solicitar cotización</h3>
+        <h3 className="text-xl font-black text-slate-900 mb-1">Solicitar cotización</h3>
         <p className="text-slate-500 text-sm">Complete el formulario y le contactaremos a la brevedad.</p>
       </div>
 
@@ -98,18 +98,18 @@ export default function ContactForm() {
       </div>
 
       {error && (
-        <p className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-xl px-4 py-3">{error}</p>
+        <p className="text-red-700 text-sm bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
       )}
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-amber-500 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 py-4 rounded-xl font-black text-base transition-all hover:shadow-xl hover:shadow-amber-500/20"
+        className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-xl font-black text-base transition-all hover:shadow-xl hover:shadow-orange-500/20"
       >
         {loading ? 'Enviando...' : 'Enviar solicitud'}
       </button>
 
-      <p className="text-slate-600 text-xs text-center">
+      <p className="text-slate-400 text-xs text-center">
         También puede contactarnos directamente por teléfono o WhatsApp.
       </p>
     </form>

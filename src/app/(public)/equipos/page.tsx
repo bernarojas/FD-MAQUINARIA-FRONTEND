@@ -19,7 +19,7 @@ export default async function EquiposPage() {
   const disponibles = machines.filter((m) => m.status === 'Disponible').length;
 
   return (
-    <div className="min-h-screen pt-24 pb-24 px-4">
+    <div className="min-h-screen pt-24 pb-24 px-4 bg-slate-50">
       <PageTracker />
       <div className="max-w-7xl mx-auto">
 
@@ -27,25 +27,25 @@ export default async function EquiposPage() {
         <div className="mb-14">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-slate-500 hover:text-amber-400 transition-colors text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2 text-slate-500 hover:text-blue-600 transition-colors text-sm font-medium mb-6"
           >
             ← Volver al inicio
           </Link>
-          <span className="block text-amber-500 text-sm font-semibold tracking-widest uppercase">
+          <span className="block text-blue-600 text-sm font-semibold tracking-widest uppercase">
             Catálogo de Equipos
           </span>
-          <h1 className="mt-3 text-3xl md:text-4xl font-black text-slate-100">
+          <h1 className="mt-3 text-3xl md:text-4xl font-black text-slate-900">
             Equipos Disponibles para Arriendo
           </h1>
-          <p className="mt-4 text-slate-400 max-w-2xl leading-relaxed">
+          <p className="mt-4 text-slate-500 max-w-2xl leading-relaxed">
             Máquinas de termofusión de alta tecnología para cañerías HDPE, geomembranas
             y tuberías PP-R. Ideales para proyectos mineros y obras civiles en el norte de Chile.
           </p>
           {machines.length > 0 && (
-            <p className="mt-3 text-slate-500 text-sm">
+            <p className="mt-3 text-slate-400 text-sm">
               {machines.length} equipo{machines.length !== 1 ? 's' : ''} en catálogo
               {disponibles > 0 && (
-                <span className="ml-2 text-emerald-400">· {disponibles} disponible{disponibles !== 1 ? 's' : ''}</span>
+                <span className="ml-2 text-emerald-600">· {disponibles} disponible{disponibles !== 1 ? 's' : ''}</span>
               )}
             </p>
           )}
@@ -53,9 +53,9 @@ export default async function EquiposPage() {
 
         {/* Grid */}
         {machines.length === 0 ? (
-          <div className="text-center py-24 border border-dashed border-slate-700 rounded-xl">
-            <p className="text-slate-500 text-lg font-medium">Catálogo en actualización.</p>
-            <p className="text-slate-600 mt-2 text-sm">
+          <div className="text-center py-24 border border-dashed border-slate-300 rounded-xl bg-white">
+            <p className="text-slate-400 text-lg font-medium">Catálogo en actualización.</p>
+            <p className="text-slate-400 mt-2 text-sm">
               Contáctenos directamente para conocer disponibilidad de equipos.
             </p>
           </div>

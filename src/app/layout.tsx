@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     default: 'F&D Equipos | Arriendo Máquinas Termofusión Calama',
   },
   description:
-    'F&D Equipos SpA arrienda máquinas de termofusión para cañerías HDPE en Calama. Termofusionadora PT 315 Tecnodue y Soldadora Cuña WGW 300 disponibles para la industria minera y obras civiles.',
+    'F&D Equipos SpA arrienda máquinas de termofusión para cañerías HDPE en Calama. PT 315 Tecnodue y Soldadora Cuña WGW 300 para proyectos mineros y obras civiles.',
   keywords: [
     'arriendo termofusionadora Calama',
     'máquinas termofusión HDPE Calama',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body className={`${inter.className} bg-slate-950 text-slate-100 antialiased`}>
+      <body className={`${inter.className} bg-white text-slate-900 antialiased`}>
         {children}
       </body>
     </html>

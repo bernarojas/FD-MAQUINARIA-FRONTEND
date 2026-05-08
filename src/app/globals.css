@@ -5,12 +5,40 @@
 
 @layer base {
   ::selection {
-    background-color: rgba(245, 158, 11, 0.25);
-    color: #fff;
+    background-color: rgba(29, 78, 216, 0.2);
+    color: #0f172a;
   }
 }
 
-/* react-day-picker dark theme */
+/* react-day-picker light theme */
+.rdp-light {
+  --rdp-accent-color: #1d4ed8;
+  --rdp-accent-background-color: rgba(29, 78, 216, 0.1);
+  --rdp-today-color: #1d4ed8;
+  color: #334155;
+}
+.rdp-light .rdp-day_button {
+  color: inherit;
+}
+.rdp-light .rdp-outside {
+  color: #cbd5e1;
+}
+.rdp-light .rdp-chevron {
+  fill: #94a3b8;
+}
+.rdp-light button:hover:not([disabled]) .rdp-day_button,
+.rdp-light .rdp-day_button:hover:not([disabled]) {
+  background-color: #eff6ff;
+}
+.rdp-light .rdp-range_middle .rdp-day_button {
+  color: #fff;
+}
+.rdp-light .rdp-nav button:hover {
+  background-color: #eff6ff;
+  border-radius: 0.5rem;
+}
+
+/* react-day-picker dark theme (admin) */
 .rdp-dark {
   --rdp-accent-color: #f59e0b;
   --rdp-accent-background-color: rgba(245, 158, 11, 0.15);
