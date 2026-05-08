@@ -14,6 +14,7 @@ import type { StatsSummary, ContactRequest } from '@/lib/api';
 const RentalCalendar = dynamicImport(() => import('@/components/admin/RentalCalendar'), { ssr: false });
 
 function getToken(): string {
+  if (typeof document === 'undefined') return '';
   const match = document.cookie.match(/(?:^|;\s*)admin_token=([^;]+)/);
   return match ? match[1] : '';
 }

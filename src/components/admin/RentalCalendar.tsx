@@ -8,6 +8,7 @@ import type { RentalPeriod, CreateRentalPayload } from '@/types/rental';
 import { getRentalPeriods, createRentalPeriod, deleteRentalPeriod } from '@/lib/api';
 
 function getToken(): string {
+  if (typeof document === 'undefined') return '';
   const match = document.cookie.match(/(?:^|;\s*)admin_token=([^;]+)/);
   return match ? match[1] : '';
 }
