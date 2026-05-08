@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { getMachines, deleteMachine, getStats, getContacts, markContacted, delet
 import type { Machine, MachineStatus } from '@/types/machine';
 import type { StatsSummary, ContactRequest } from '@/lib/api';
 
-const RentalCalendar = dynamic(() => import('@/components/admin/RentalCalendar'), { ssr: false });
+const RentalCalendar = dynamicImport(() => import('@/components/admin/RentalCalendar'), { ssr: false });
 
 function getToken(): string {
   const match = document.cookie.match(/(?:^|;\s*)admin_token=([^;]+)/);
