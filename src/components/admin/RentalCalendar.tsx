@@ -48,6 +48,14 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError]           = useState('');
   const [rangeError, setRangeError] = useState('');
+  const [months, setMonths]         = useState(2);
+
+  useEffect(() => {
+    function update() { setMonths(window.innerWidth < 1024 ? 1 : 2); }
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   useEffect(() => {
     if (!machineId) return;
@@ -127,12 +135,18 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        {/* Calendar */}
-        <div className="rdp-light order-2 lg:order-1">
+      {/* Layout:
+          - mobile (<lg): 1 col → calendario, formulario y lista apilados
+          - lg (≥1024): 2 cols → calendario en fila completa (2 meses), formulario + lista debajo
+          - xl (≥1280): 3 cols → calendario (2 meses) + formulario en fila 1, lista en fila 2 */}
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 items-start">
+        {/* Calendar — centrado */}
+        <div className="rdp-admin flex flex-col items-center lg:col-span-2">
           <DayPicker
             locale={es}
             mode="range"
+            numberOfMonths={months}
+            pagedNavigation
             selected={range}
             onSelect={handleRangeSelect}
             showOutsideDays={false}
@@ -140,10 +154,8 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
             modifiers={{ booked: blockedDates }}
             modifiersStyles={{
               booked: {
-                color: '#ef4444',
-                backgroundColor: 'rgba(239,68,68,0.12)',
+                color: '#9ca3af',
                 textDecoration: 'line-through',
-                borderRadius: '50%',
                 opacity: 1,
               },
             }}
@@ -154,63 +166,61 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
               {range.to && range.to !== range.from ? ` → ${fmtDate(toDateStr(range.to))}` : ''}
             </p>
           )}
-          {rangeError && (
-            <p className="text-red-600 text-xs mt-2">{rangeError}</p>
-          )}
+          {rangeError && <p className="text-red-600 text-xs mt-2">{rangeError}</p>}
         </div>
 
-        {/* Form + list */}
-        <div className="space-y-5 order-1 lg:order-2">
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
-              Bloquear período
-            </p>
+        {/* Formulario — col 3 en xl (al lado del calendario), debajo del calendario en lg/mobile */}
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4 xl:col-start-3 xl:row-start-1">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+            Bloquear período
+          </p>
 
-            <div>
-              <label className={labelCls}>Empresa *</label>
-              <input
-                type="text"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                placeholder="Nombre de la empresa"
-                className={inputCls}
-              />
-            </div>
-
-            <div>
-              <label className={labelCls}>Notas</label>
-              <textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                rows={2}
-                placeholder="Observaciones opcionales..."
-                className={`${inputCls} resize-none`}
-              />
-            </div>
-
-            {range?.from ? (
-              <p className="text-xs text-blue-600 font-medium">
-                Fechas: {fmtDate(toDateStr(range.from))}
-                {range.to && range.to !== range.from ? ` → ${fmtDate(toDateStr(range.to))}` : ' (selecciona fecha de término)'}
-              </p>
-            ) : (
-              <p className="text-xs text-slate-400">Selecciona el rango de fechas en el calendario</p>
-            )}
-
-            {error && <p className="text-red-600 text-xs">{error}</p>}
-
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white py-2.5 rounded-xl font-bold text-sm transition-colors"
-            >
-              {saving ? 'Guardando...' : 'Bloquear fechas'}
-            </button>
+          <div>
+            <label className={labelCls}>Empresa *</label>
+            <input
+              type="text"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+              placeholder="Nombre de la empresa"
+              className={inputCls}
+            />
           </div>
 
-          {/* Existing periods */}
-          {periods.length > 0 && (
-            <div>
+          <div>
+            <label className={labelCls}>Notas</label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={2}
+              placeholder="Observaciones opcionales..."
+              className={`${inputCls} resize-none`}
+            />
+          </div>
+
+          {range?.from ? (
+            <p className="text-xs text-blue-600 font-medium">
+              Fechas: {fmtDate(toDateStr(range.from))}
+              {range.to && range.to !== range.from ? ` → ${fmtDate(toDateStr(range.to))}` : ' (selecciona fecha de término)'}
+            </p>
+          ) : (
+            <p className="text-xs text-slate-400">Selecciona el rango de fechas en el calendario</p>
+          )}
+
+          {error && <p className="text-red-600 text-xs">{error}</p>}
+
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 text-white py-2.5 rounded-xl font-bold text-sm transition-colors"
+          >
+            {saving ? 'Guardando...' : 'Bloquear fechas'}
+          </button>
+        </div>
+
+        {/* Lista de períodos — fila completa en xl */}
+        <div className="xl:col-span-3 xl:row-start-2">
+          {periods.length > 0 ? (
+            <>
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">
                 Períodos registrados — {machineName}
               </p>
@@ -234,10 +244,8 @@ export default function RentalCalendar({ machines }: { machines: Machine[] }) {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {periods.length === 0 && (
+            </>
+          ) : (
             <p className="text-xs text-slate-400 text-center py-4">
               No hay períodos registrados para este equipo.
             </p>

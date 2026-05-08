@@ -30,7 +30,7 @@ export default function AvailabilityCalendar({ periods }: { periods: RentalPerio
   }, []);
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm rdp-light">
+    <div className="border-t border-slate-200 pt-6 rdp-light">
       <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">
         Disponibilidad
       </h2>

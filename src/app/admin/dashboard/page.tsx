@@ -36,7 +36,11 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const token = getToken();
-    Promise.all([getMachines(), getStats(token), getContacts(token)])
+    Promise.all([
+      getMachines().catch(() => [] as Machine[]),
+      getStats(token).catch(() => null),
+      getContacts(token).catch(() => [] as ContactRequest[]),
+    ])
       .then(([m, s, c]) => { setMachines(m); setStats(s); setContacts(c); })
       .finally(() => setLoading(false));
   }, []);
