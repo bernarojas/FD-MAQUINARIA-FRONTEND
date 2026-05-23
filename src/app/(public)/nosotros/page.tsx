@@ -92,7 +92,7 @@ export default function NosotrosPage() {
           <div className="w-full h-64 sm:h-[420px]">
             <iframe
               title="Ubicación F&D Equipos"
-              src="https://maps.google.com/maps?q=Antofagasta+3350,Calama,Antofagasta,Chile&t=m&z=16&output=embed&iwloc=near"
+              src="https://maps.google.com/maps?q=-22.4572,-68.9272&t=m&z=16&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
