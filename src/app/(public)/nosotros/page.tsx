@@ -92,7 +92,7 @@ export default function NosotrosPage() {
           <div className="w-full h-64 sm:h-[420px]">
             <iframe
               title="Ubicación F&D Equipos"
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d230.44700292772117!2d-68.9429292!3d-22.4609199!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x96ac09a545118067%3A0x8075c81d399b468!2sAntofagasta%203350%2C%201391274%20Calama%2C%20Antofagasta!5e0!3m2!1ses!2scl!4v1779520801388!5m2!1ses!2scl"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d920.4470029326089!2d-68.9429292494807!3d-22.460919897060485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x96ac09a545118067%3A0x8075c81d399b468!2sAntofagasta%203350%2C%201391274%20Calama%2C%20Antofagasta!5e0!3m2!1ses!2scl!4v1779553377440!5m2!1ses!2scl"
               width="100%"
               height="100%"
               style={{ border: 0 }}
