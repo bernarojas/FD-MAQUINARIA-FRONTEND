@@ -5,6 +5,10 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fdarriendos.cl'),
+  alternates: {
+    canonical: '/',
+  },
   title: {
     template: '%s | F&D Equipos · Termofusión Calama',
     default: 'F&D Equipos | Arriendo Máquinas Termofusión Calama',
@@ -24,6 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'es_CL',
+    url: 'https://fdarriendos.cl',
     siteName: 'F&D Equipos SpA',
     title: 'F&D Equipos | Arriendo Máquinas Termofusión Calama',
     description:
